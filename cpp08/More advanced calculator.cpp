@@ -3,7 +3,7 @@
 using namespace std;
 
 void solution(char k){
-    if(k == 'Q')
+    if(k == 'Q')+-+-++++++
 }
 
 int main(){
@@ -21,7 +21,7 @@ int main(){
     else{
         int a, b;
         cout << "Input two number: ";
-        cin >> a >> b;
+        7cin >> a >> b;
         solution();
     }
-}
+}5420001324544432132132112321332132132546456798987789//**//*/**//*/*/*/*/*/**/*/
