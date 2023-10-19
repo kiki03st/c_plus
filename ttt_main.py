@@ -70,6 +70,7 @@ def position():
     return row, col
 
 
+
 def minimax(board, turn):
     # board : 현재 틱택토 보드
     # turn : user 또는 computer의 차례
@@ -79,8 +80,24 @@ def minimax(board, turn):
     # 2. ① 사용자가 둔 수 이후에 대한 탐색과 ② 컴퓨터가 둔 수 이후에 대한 탐색을 재귀적’으로 수행
     #    단, 사용자는 값을 최대화 하는쪽으로 / 컴퓨터는 값을 최소화 하는 쪽으로 탐색 
     #    재귀적으로 탐색을 수행하다보면 승패가 결정된 값이 반환됨
+    # 1 - user / 2 - computer
+    value = (-100) * (2 * turn  - 3)
     
+    if game_result(board) == value:
+        return value
     
+    board_copy = board[:]
+    turn = turn == 1 ? 2 : 1
+    
+    minimax_val = -101
+
+    for i in range(3):
+        for j in range(3):
+            if board_copy[i][j] == 0:
+                board_copy[i][j] = turn
+                if minimax(board_copy, turn) > minimax_val:
+                    minimax_val =  minimax(board_copy, turn)
+
     return minimax_val
 
     
@@ -113,14 +130,24 @@ def computer(board):
                 empty_cnt+=1
     '''
     turn = 2    #computer
-
+    row = -1
+    col = -1
+    zero = False
     for i in range(3):
         for j in range(3):
-            if minimax(board, turn) == -100:
-                row = i, col = j
+            value = minimax(board, turn)
+            if value == -100:
+                row = i
+                col = j
                 return row, col
-            
-
+            elif value == 0:
+                zero = True
+                row= i
+                col = j
+            else:
+                if not zero:
+                    row = i
+                    col = j
     return row, col    
 
 

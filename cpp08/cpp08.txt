@@ -1,0 +1,125 @@
+//1. More advanced calculator
+#include <iostream>
+
+using namespace std;
+
+template <typename T>
+void solution(char k, int a, T b){
+	if(k == '+'){
+		cout <<  a + b;
+	}
+	else if(k == '-'){
+		cout << a - b;
+	}
+	else if(k == '*'){
+		cout << a * b;
+	}
+	else if(k == '/'){
+		if (sizeof(b) == 4){
+			solution(k, a, (double)b);
+		}
+		else{
+			cout << a / b;
+		}
+	}
+}
+
+int main(){
+    cout << "--------------" << endl;
+    cout << "+ : add" << endl;
+    cout << "- : subtract" << endl;
+    cout << "* : multiply" << endl;
+    cout << "/ : divide" << endl;
+    cout << "Q : quit" << endl;
+    cout << "--------------" << endl << endl;
+    cout << "Select an operator: ";
+    char k;
+    cin >> k;
+    if(k == 'Q') return 0;
+    else{
+        int a, b;
+        cout << "Input two number: ";
+        cin >> a >> b;
+        cout << "Answer: ";
+	solution(k, a, b);
+	cout << endl;
+    }
+}
+
+
+//2. Quadrant two
+#include <iostream>
+#include <cmath>
+
+
+using namespace std;
+
+void dist_2d(){
+	int x1, x2, y1, y2;
+	cout << "input x1, y1:";
+	cin >> x1 >> y1;
+	cout << "input x2, y2:";
+	cin >> x2 >> y2;
+	cout << "Distance: " << sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1)) << endl;
+}
+
+int main(){
+	dist_2d();
+	return 0;
+}
+
+
+//3. Digits three
+
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+void three_dot(string line){
+	for(int i = 0; i < line.length() % 3; i++){
+		cout << line[i];
+	}
+	for(int i = line.length() % 3; i < line.length(); i+=3){
+		cout << ",";
+		for(int j = i; j < i + 3; j++){
+			cout << line[j];
+		}
+	}
+	cout << endl;
+}
+
+int main(){
+	cout << "input number: ";
+	string line;
+	cin >> line;
+	three_dot(line);
+	return 0;
+}
+
+
+//4. Tower of Hanoi
+#include <iostream>
+
+using namespace std;
+
+void hanoi(int n, char a, char b, char c){
+	if(n == 1){
+		cout << "Moved the disk " << n << " from " << a << " to " << b << " via " << c << "." << endl;
+	}
+	else{
+		hanoi(n - 1, a, c, b);
+		cout << "Moved the disk " << n << " from " << a << " to " << b << " via " << c << "." << endl;
+		hanoi(n - 1, c, b, a);
+	}
+}
+
+int main(){
+	int n;
+	cout << "Enter the nuimber of disks : ";
+	cin >> n;
+	hanoi(n, 'A', 'B', 'C');
+	return 0;
+}
+
+

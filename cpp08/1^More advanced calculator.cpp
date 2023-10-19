@@ -2,8 +2,25 @@
 
 using namespace std;
 
-void solution(char k){
-    if(k == 'Q')+-+-++++++
+template <typename T>
+void solution(char k, int a, T b){
+	if(k == '+'){
+		cout <<  a + b;
+	}
+	else if(k == '-'){
+		cout << a - b;
+	}
+	else if(k == '*'){
+		cout << a * b;
+	}
+	else if(k == '/'){
+		if (sizeof(b) == 4){
+			solution(k, a, (double)b);
+		}
+		else{
+			cout << a / b;
+		}
+	}
 }
 
 int main(){
@@ -21,7 +38,9 @@ int main(){
     else{
         int a, b;
         cout << "Input two number: ";
-        7cin >> a >> b;
-        solution();
+        cin >> a >> b;
+        cout << "Answer: ";
+	solution(k, a, b);
+	cout << endl;
     }
-}5420001324544432132132112321332132132546456798987789//**//*/**//*/*/*/*/*/**/*/
+}
