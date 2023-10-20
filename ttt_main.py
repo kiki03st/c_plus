@@ -81,22 +81,93 @@ def minimax(board, turn):
     #    단, 사용자는 값을 최대화 하는쪽으로 / 컴퓨터는 값을 최소화 하는 쪽으로 탐색 
     #    재귀적으로 탐색을 수행하다보면 승패가 결정된 값이 반환됨
     # 1 - user / 2 - computer
-    value = (-100) * (2 * turn  - 3)
-    
-    if game_result(board) == value:
-        return value
-    
-    board_copy = board[:]
-    turn = turn == 1 ? 2 : 1
-    
-    minimax_val = -101
+    # 100 - user / -100 - computer
+    def line(board, turn):      #자기 차례에서 1수만 두면 이길 수 있는 경우의 수 구하기
+        line_arr=[]
+        dot = (0, 0)
+        for i in range(3):
+            cnt = []
+            for j in range(3):
+                if board[i][j] == turn:
+                    cnt+=1
+                elif board[i][j] == 0:
+                    dot = (i, j)
+                    continue
+                else:
+                    cnt = -1
+                    break
+            if cnt == 2:
+                line_arr.append(dot)
 
+        for j in range(3):
+            cnt = 0
+            for i in range(3):
+                if board[i][j] == turn:
+                    cnt+=1
+                elif board[i][j] == 0:
+                    dot = (i, j)
+                    continue
+                else:
+                    cnt = -1
+                    break
+            if cnt == 2:
+                line_arr.append(dot)
+        
+        cnt = 0
+        for i in range(3):
+            if board[i][2 - i] == turn:
+                cnt+=1
+            elif board[i][2 - i] == 0:
+                dot = (i, 2 - i)
+                continue
+            else:
+                cnt = -1
+                break
+        if cnt == 2:
+            line_arr.append(dot)
+
+        cnt = 0
+        for i in range(3):
+            if board[2 - i][i] == turn:
+                cnt+=1
+            elif board[2 - i][i] == 0:
+                dot = (2 - i, i)
+                continue
+            else:
+                cnt = -1
+                break
+        if cnt == 2:
+            line_arr.append(dot)
+        line_cnt = len(set(line_arr))
+        return line_cnt
+
+    # minimax 함수의 재귀를 통해서 value 또는 minimax_val의 값을 반환 가능하게 됨
+    # 재귀로서 불러들인 minimax 함수의 리턴값을 어떻게 이용해야할까?
+    # result == (2 * turn - 3) * (-100) 의 조건은 결국 최소 2번의 재귀가 반복되면 무용지물이 됨
+    # 현재 반환될 수 있는 값은 value,minimax_val 두 가지
+    # value의 반환은 항상 어느 한쪽이 이기는 상태로 끝남
+    # minimax_val값의 변동 조건은?
+    # minimax 함수의 존재 의의는?
+    # computer가 하나의 수를 뒀을 때, computer가 만날 수 있는 최악의 조건을 가정하는 함수
+    # minimax 함수의 흐름은 다음과 같은 순위에 따라 정해짐
+    # 1. 현재 나의 차례에 게임을 끝낼 수 있는 수가 있다면 반환
+    # 2. 다음 상대 차례에 상대가 이기는 상황이 나오는 경우, 그 수를 막음
+    # 3. 만약 이 두가지 수가 존재하지 않는 경우, 최대한 막기 어려운 수를 둠
+    # 막기 어려운 수란 어떠한 수를 두었을 떄, 막아야 하는 자리가 2개 이상인 수를 의미함
+    # 4. 모든 조건이 성립하지 않는 경우, 다음 수로 한 줄을 완성할 수 있는 수를 둠
+
+    value = game_result(board)
+    if value == (2 * turn - 3) * (-100):
+        return value
     for i in range(3):
         for j in range(3):
-            if board_copy[i][j] == 0:
-                board_copy[i][j] = turn
-                if minimax(board_copy, turn) > minimax_val:
-                    minimax_val =  minimax(board_copy, turn)
+            if board[i][j] == 0:
+                board[i][j] = turn
+                result = minimax(board, 3 - turn)
+                board[i][j] = 0
+                if result == (2 * turn - 3) * (-100):
+                    minimax_val = result
+                 
 
     return minimax_val
 
@@ -106,48 +177,15 @@ def computer(board):
     ### 현재 computer()함수는 빈곳에 랜덤하게 돌을 두도록 프로그래밍 되어있음
     ### 무조건 user를 상대로 [비기거나/이기도록] 미니맥스 알고리즘을 이용하여 다시 프로그래밍 하시오  
     ### computer() 함수와 minimax() 함수만 새로 작성하여 문제를 해결하시오
-    '''
-    row = 0
-    col = 0
-    empty_cnt = 0    
-    for i_idx in range(3):
-        for j_idx in range(3):
-            if board[i_idx][j_idx] == 0:
-                empty_cnt+=1
-
-    rnd_idx = random.randrange(1,empty_cnt)
-    
-    empty_cnt = 0
-    
-    for i_idx in range(3): 
-        for j_idx in range(3):
-            if board[i_idx][j_idx] == 0:          
-                if empty_cnt == rnd_idx:
-                    row = i_idx
-                    col = j_idx
-                    return row, col
-                    
-                empty_cnt+=1
-    '''
-    turn = 2    #computer
     row = -1
     col = -1
     zero = False
     for i in range(3):
         for j in range(3):
-            value = minimax(board, turn)
-            if value == -100:
-                row = i
-                col = j
-                return row, col
-            elif value == 0:
-                zero = True
-                row= i
-                col = j
-            else:
-                if not zero:
-                    row = i
-                    col = j
+            if board[i][j] == 0:
+                board[i][j] = 2
+                result = minimax(board, 1)
+
     return row, col    
 
 
