@@ -70,36 +70,59 @@ def position():
     return row, col
 
 
-
-def minimax(board, turn):
-    # board : 현재 틱택토 보드
-    # turn : user 또는 computer의 차례
+def minimax(board, turn, depth):
+    # 게임 결과 확인
+    result = game_result(board)
     
-    # hint
-    # 1. minimax함수에서는 사람이 이기면 큰 수 (+100), 컴퓨터가 이기면 작은수 (-100), 비기면 중간값(0) 반환 - game_result() 함수 활용
-    # 2. ① 사용자가 둔 수 이후에 대한 탐색과 ② 컴퓨터가 둔 수 이후에 대한 탐색을 재귀적’으로 수행
-    #    단, 사용자는 값을 최대화 하는쪽으로 / 컴퓨터는 값을 최소화 하는 쪽으로 탐색 
-    #    재귀적으로 탐색을 수행하다보면 승패가 결정된 값이 반환됨
-    if 
-    return minimax_val
+    if result == 1:  # 사용자가 이긴 경우
+        return -100 + depth
+    elif result == 2:  # 컴퓨터가 이긴 경우
+        return 100 - depth
+    elif result == 0:  # 무승부인 경우
+        return 0
 
+    if turn == 1:  # 사용자의 차례
+        maximizer = -101  # 최댓값 초기화
+        for i in range(3):
+            for j in range(3):
+                if board[i][j] == 0:  # 빈 칸인 경우
+                    board[i][j] = 1  # 사용자가 둠
+                    score = minimax(board, 2, depth + 1)  # 컴퓨터의 차례로 재귀 호출
+                    board[i][j] = 0  # 되돌림
+                    maximizer = max(maximizer, score)  # 최댓값 갱신
+        return maximizer
+
+    if turn == 2:  # 컴퓨터의 차례
+        minimizer = 101  # 최솟값 초기화
+        for i in range(3):
+            for j in range(3):
+                if board[i][j] == 0:  # 빈 칸인 경우
+                    board[i][j] = 2  # 컴퓨터가 둠
+                    score = minimax(board, 1, depth + 1)  # 사용자의 차례로 재귀 호출
+                    board[i][j] = 0  # 되돌림
+                    minimizer = min(minimizer, score)  # 최솟값 갱신
+        return minimizer
 
 def computer(board):
     
     ### 현재 computer()함수는 빈곳에 랜덤하게 돌을 두도록 프로그래밍 되어있음
     ### 무조건 user를 상대로 [비기거나/이기도록] 미니맥스 알고리즘을 이용하여 다시 프로그래밍 하시오  
     ### computer() 함수와 minimax() 함수만 새로 작성하여 문제를 해결하시오
+    score = 101
     row = -1
     col = -1
-    zero = False
     for i in range(3):
         for j in range(3):
             if board[i][j] == 0:
                 board[i][j] = 2
-                result = minimax(board, 1)
-                if result == -100:
-                    return row, col
-
+                if score > minimax(board, 1, 0):
+                    score = minimax(board, 1, 0)
+                    row = i
+                    col = j
+                board[i][j] = 0
+                if row == -1 and col == -1:
+                    row = i
+                    col = j
     return row, col    
 
 
