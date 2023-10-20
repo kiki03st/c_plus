@@ -82,6 +82,7 @@ def minimax(board, turn):
     #    재귀적으로 탐색을 수행하다보면 승패가 결정된 값이 반환됨
     # 1 - user / 2 - computer
     # 100 - user / -100 - computer
+    minimax_val = 0
     def line(board, turn):      #자기 차례에서 1수만 두면 이길 수 있는 경우의 수 구하기
         line_arr=[]
         dot = (0, 0)
@@ -155,7 +156,7 @@ def minimax(board, turn):
     # 3. 만약 이 두가지 수가 존재하지 않는 경우, 최대한 막기 어려운 수를 둠
     # 막기 어려운 수란 어떠한 수를 두었을 떄, 막아야 하는 자리가 2개 이상인 수를 의미함
     # 4. 모든 조건이 성립하지 않는 경우, 다음 수로 한 줄을 완성할 수 있는 수를 둠
-
+'''
     value = game_result(board)
     if value == (2 * turn - 3) * (-100):
         return value
@@ -165,13 +166,25 @@ def minimax(board, turn):
                 board[i][j] = turn
                 result = minimax(board, 3 - turn)
                 board[i][j] = 0
-                if result == (2 * turn - 3) * (-100):
-                    minimax_val = result
-                 
-
+                if r 
+'''
+    value = game_result(board)  #현재 상황에서 승패 또는 무승부 값을 측정
+    if value != 0:  #만약 승패가 결정되었다면
+        return value    #승패 여부 반환
+    for i in range(3):
+        for j in range(3):
+            if board[i][j] == 0:
+                board[i][j] = turn
+                if turn == 1:   #현재 차례가 user라면
+                    result = minimax(board, 2)  #차례가 computer로 넘어갔을 때의 승패 여부를 반환
+                    minimax_val = max(result, minimax_val)  #result와 minimax_val 중에서 더 큰 값을 minimax_val로 지정
+                else:   #현재 차례가 computer라면
+                    result = minimax(board, 1)
+                    minimax_val = min(result, minimax_val)
+                board[i][j] = 0
     return minimax_val
 
-    
+
 def computer(board):
     
     ### 현재 computer()함수는 빈곳에 랜덤하게 돌을 두도록 프로그래밍 되어있음
@@ -185,6 +198,8 @@ def computer(board):
             if board[i][j] == 0:
                 board[i][j] = 2
                 result = minimax(board, 1)
+                if result == -100:
+                    return row, col
 
     return row, col    
 
