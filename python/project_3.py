@@ -70,59 +70,67 @@ def position():
     return row, col
 
 
-def minimax(board, turn, depth):
+
+def minimax(board, turn):
     # 게임 결과 확인
     result = game_result(board)
     
     if result == 1:  # 사용자가 이긴 경우
-        return -100 + depth
+        return 100
     elif result == 2:  # 컴퓨터가 이긴 경우
-        return 100 - depth
+        return -100
     elif result == 0:  # 무승부인 경우
         return 0
-
-    if turn == 1:  # 사용자의 차례
-        maximizer = -101  # 최댓값 초기화
-        for i in range(3):
-            for j in range(3):
-                if board[i][j] == 0:  # 빈 칸인 경우
-                    board[i][j] = 1  # 사용자가 둠
-                    score = minimax(board, 2, depth + 1)  # 컴퓨터의 차례로 재귀 호출
-                    board[i][j] = 0  # 되돌림
-                    maximizer = max(maximizer, score)  # 최댓값 갱신
-        return maximizer
-
-    if turn == 2:  # 컴퓨터의 차례
-        minimizer = 101  # 최솟값 초기화
-        for i in range(3):
-            for j in range(3):
-                if board[i][j] == 0:  # 빈 칸인 경우
-                    board[i][j] = 2  # 컴퓨터가 둠
-                    score = minimax(board, 1, depth + 1)  # 사용자의 차례로 재귀 호출
-                    board[i][j] = 0  # 되돌림
-                    minimizer = min(minimizer, score)  # 최솟값 갱신
-        return minimizer
+    if turn == 1: minimax_val = -100    # 사용자의 차례인 경우
+    else: minimax_val = 100             # 컴퓨터의 차례인 경우
+    for i in range(3):
+        for j in range(3):
+            if board[i][j] == 0:        # 빈 칸인 경우
+                board[i][j] = turn      # 차례에 맞는 대상이 둠
+                score = minimax(board, 3 - turn)    # 다른 대상의 차례로 재귀 호출(사용자 : 컴퓨터 / 컴퓨터 : 사용자)
+                board[i][j] = 0         # 보드 되돌려두기
+                if turn == 1: minimax_val = max(minimax_val, score) #사용자 차례인 경우, 최댓값 갱신
+                else: minimax_val = min(minimax_val, score) #컴퓨터 차례인 경우, 최솟값 갱신
+        return minimax_val
 
 def computer(board):
     
     ### 현재 computer()함수는 빈곳에 랜덤하게 돌을 두도록 프로그래밍 되어있음
     ### 무조건 user를 상대로 [비기거나/이기도록] 미니맥스 알고리즘을 이용하여 다시 프로그래밍 하시오  
     ### computer() 함수와 minimax() 함수만 새로 작성하여 문제를 해결하시오
-    score = 101
     row = -1
     col = -1
+    score = 101    # score 초기값 지정(result보다 큰지 비교해야 하므로 최댓값 100을 초과한 101로 설정)
+
     for i in range(3):
         for j in range(3):
-            if board[i][j] == 0:
-                board[i][j] = 2
-                if score > minimax(board, 1, 0):
-                    score = minimax(board, 1, 0)
-                    row = i
-                    col = j
-                board[i][j] = 0
-                if row == -1 and col == -1:
-                    row = i
-                    col = j
+            if board[i][j] == 0:    # 빈칸인 경우
+                board[i][j] = 2     # 컴퓨터가 뒀다고 가정
+                result = game_result(board) # 컴퓨터가 뒀을 경우의 값 반환
+                board[i][j] = 0     #보드 되돌리기
+                if result == -100:  # 컴퓨터가 이긴다면
+                    return i, j     # 좌표 반환(컴퓨터가 이길 수 있는 수 두기)
+    
+    for i in range(3):
+        for j in range(3):
+            if board[i][j] == 0:    # 빈칸인 경우
+                board[i][j] = 1     # 사용자가 뒀다고 가정
+                result = game_result(board) # 사용자가 뒀을 경우의 값 반환
+                board[i][j] = 0     # 보드 되돌리기
+                if result == 100:   # 사용자가 이긴다면
+                    return i, j     # 좌표 반환(사용자가 이길 수 있는 수 차단)
+
+    for i in range(3):
+        for j in range(3):
+            if board[i][j] == 0:    # 빈칸인 경우
+                board[i][j] = 2     # 컴퓨터가 뒀다고 가정
+                result = minimax(board, 1)  # 미니맥스 알고리즘을 통한 값 반환
+                board[i][j] = 0     # 보드 되돌리기
+                if result < score:  # 미니맥스 알고리즘을 통해 예측한 값이 score보다 작다면
+                    score = result  # score 값을 result로 갱신
+                    row = i     # 좌표 갱신
+                    col = j     # 좌표 갱신
+
     return row, col    
 
 

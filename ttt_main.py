@@ -72,118 +72,26 @@ def position():
 
 
 def minimax(board, turn):
-    # board : 현재 틱택토 보드
-    # turn : user 또는 computer의 차례
+    # 게임 결과 확인
+    result = game_result(board)
     
-    # hint
-    # 1. minimax함수에서는 사람이 이기면 큰 수 (+100), 컴퓨터가 이기면 작은수 (-100), 비기면 중간값(0) 반환 - game_result() 함수 활용
-    # 2. ① 사용자가 둔 수 이후에 대한 탐색과 ② 컴퓨터가 둔 수 이후에 대한 탐색을 재귀적’으로 수행
-    #    단, 사용자는 값을 최대화 하는쪽으로 / 컴퓨터는 값을 최소화 하는 쪽으로 탐색 
-    #    재귀적으로 탐색을 수행하다보면 승패가 결정된 값이 반환됨
-    # 1 - user / 2 - computer
-    # 100 - user / -100 - computer
-    minimax_val = 0
-    def line(board, turn):      #자기 차례에서 1수만 두면 이길 수 있는 경우의 수 구하기
-        line_arr=[]
-        dot = (0, 0)
-        for i in range(3):
-            cnt = []
-            for j in range(3):
-                if board[i][j] == turn:
-                    cnt+=1
-                elif board[i][j] == 0:
-                    dot = (i, j)
-                    continue
-                else:
-                    cnt = -1
-                    break
-            if cnt == 2:
-                line_arr.append(dot)
-
-        for j in range(3):
-            cnt = 0
-            for i in range(3):
-                if board[i][j] == turn:
-                    cnt+=1
-                elif board[i][j] == 0:
-                    dot = (i, j)
-                    continue
-                else:
-                    cnt = -1
-                    break
-            if cnt == 2:
-                line_arr.append(dot)
-        
-        cnt = 0
-        for i in range(3):
-            if board[i][2 - i] == turn:
-                cnt+=1
-            elif board[i][2 - i] == 0:
-                dot = (i, 2 - i)
-                continue
-            else:
-                cnt = -1
-                break
-        if cnt == 2:
-            line_arr.append(dot)
-
-        cnt = 0
-        for i in range(3):
-            if board[2 - i][i] == turn:
-                cnt+=1
-            elif board[2 - i][i] == 0:
-                dot = (2 - i, i)
-                continue
-            else:
-                cnt = -1
-                break
-        if cnt == 2:
-            line_arr.append(dot)
-        line_cnt = len(set(line_arr))
-        return line_cnt
-
-    # minimax 함수의 재귀를 통해서 value 또는 minimax_val의 값을 반환 가능하게 됨
-    # 재귀로서 불러들인 minimax 함수의 리턴값을 어떻게 이용해야할까?
-    # result == (2 * turn - 3) * (-100) 의 조건은 결국 최소 2번의 재귀가 반복되면 무용지물이 됨
-    # 현재 반환될 수 있는 값은 value,minimax_val 두 가지
-    # value의 반환은 항상 어느 한쪽이 이기는 상태로 끝남
-    # minimax_val값의 변동 조건은?
-    # minimax 함수의 존재 의의는?
-    # computer가 하나의 수를 뒀을 때, computer가 만날 수 있는 최악의 조건을 가정하는 함수
-    # minimax 함수의 흐름은 다음과 같은 순위에 따라 정해짐
-    # 1. 현재 나의 차례에 게임을 끝낼 수 있는 수가 있다면 반환
-    # 2. 다음 상대 차례에 상대가 이기는 상황이 나오는 경우, 그 수를 막음
-    # 3. 만약 이 두가지 수가 존재하지 않는 경우, 최대한 막기 어려운 수를 둠
-    # 막기 어려운 수란 어떠한 수를 두었을 떄, 막아야 하는 자리가 2개 이상인 수를 의미함
-    # 4. 모든 조건이 성립하지 않는 경우, 다음 수로 한 줄을 완성할 수 있는 수를 둠
-'''
-    value = game_result(board)
-    if value == (2 * turn - 3) * (-100):
-        return value
+    if result == 1:  # 사용자가 이긴 경우
+        return 100
+    elif result == 2:  # 컴퓨터가 이긴 경우
+        return -100
+    elif result == 0:  # 무승부인 경우
+        return 0
+    if turn == 1: minimax_val = -100    # 사용자의 차례인 경우
+    else: minimax_val = 100             # 컴퓨터의 차례인 경우
     for i in range(3):
         for j in range(3):
-            if board[i][j] == 0:
-                board[i][j] = turn
-                result = minimax(board, 3 - turn)
-                board[i][j] = 0
-                if r 
-'''
-    value = game_result(board)  #현재 상황에서 승패 또는 무승부 값을 측정
-    if value != 0:  #만약 승패가 결정되었다면
-        return value    #승패 여부 반환
-    for i in range(3):
-        for j in range(3):
-            if board[i][j] == 0:
-                board[i][j] = turn
-                if turn == 1:   #현재 차례가 user라면
-                    result = minimax(board, 2)  #차례가 computer로 넘어갔을 때의 승패 여부를 반환
-                    minimax_val = max(result, minimax_val)  #result와 minimax_val 중에서 더 큰 값을 minimax_val로 지정
-                else:   #현재 차례가 computer라면
-                    result = minimax(board, 1)
-                    minimax_val = min(result, minimax_val)
-                board[i][j] = 0
-    return minimax_val
-
+            if board[i][j] == 0:        # 빈 칸인 경우
+                board[i][j] = turn      # 차례에 맞는 대상이 둠
+                score = minimax(board, 3 - turn)    # 다른 대상의 차례로 재귀 호출(사용자 : 컴퓨터 / 컴퓨터 : 사용자)
+                board[i][j] = 0         # 보드 되돌려두기
+                if turn == 1: minimax_val = max(minimax_val, score) #사용자 차례인 경우, 최댓값 갱신
+                else: minimax_val = min(minimax_val, score) #컴퓨터 차례인 경우, 최솟값 갱신
+        return minimax_val
 
 def computer(board):
     
@@ -192,14 +100,36 @@ def computer(board):
     ### computer() 함수와 minimax() 함수만 새로 작성하여 문제를 해결하시오
     row = -1
     col = -1
-    zero = False
+    score = 101    # score 초기값 지정(result보다 큰지 비교해야 하므로 최댓값 100을 초과한 101로 설정)
+
     for i in range(3):
         for j in range(3):
-            if board[i][j] == 0:
-                board[i][j] = 2
-                result = minimax(board, 1)
-                if result == -100:
-                    return row, col
+            if board[i][j] == 0:    # 빈칸인 경우
+                board[i][j] = 2     # 컴퓨터가 뒀다고 가정
+                result = game_result(board) # 컴퓨터가 뒀을 경우의 값 반환
+                board[i][j] = 0     #보드 되돌리기
+                if result == -100:  # 컴퓨터가 이긴다면
+                    return i, j     # 좌표 반환(컴퓨터가 이길 수 있는 수 두기)
+    
+    for i in range(3):
+        for j in range(3):
+            if board[i][j] == 0:    # 빈칸인 경우
+                board[i][j] = 1     # 사용자가 뒀다고 가정
+                result = game_result(board) # 사용자가 뒀을 경우의 값 반환
+                board[i][j] = 0     # 보드 되돌리기
+                if result == 100:   # 사용자가 이긴다면
+                    return i, j     # 좌표 반환(사용자가 이길 수 있는 수 차단)
+
+    for i in range(3):
+        for j in range(3):
+            if board[i][j] == 0:    # 빈칸인 경우
+                board[i][j] = 2     # 컴퓨터가 뒀다고 가정
+                result = minimax(board, 1)  # 미니맥스 알고리즘을 통한 값 반환
+                board[i][j] = 0     # 보드 되돌리기
+                if result < score:  # 미니맥스 알고리즘을 통해 예측한 값이 score보다 작다면
+                    score = result  # score 값을 result로 갱신
+                    row = i     # 좌표 갱신
+                    col = j     # 좌표 갱신
 
     return row, col    
 
