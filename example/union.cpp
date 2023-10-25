@@ -10,6 +10,7 @@ union one4all{
 	double dou;
 };
 
+
 int main(){
 	one4all uni;
 	uni.in = 10;
@@ -29,6 +30,6 @@ int main(){
 	cout << "uni.lo : " << uni.lo << endl;
 	uni.dou = 30;
 	cout << "uni.dou : " << uni.dou << endl;
-
+	
 	return 0;
 }
