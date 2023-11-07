@@ -34,6 +34,10 @@ def function(a, b, x):
     return a * x + b
 time = 7.3
 print('학습 모델에 의해 예측한', time, '시간 작업하였을 때 완성된 인형은', function(a, b, time), '개입니다. ')
-x = np.arrange(0, b)
-y = x * a
+x = []
+y = []
+for i in range(0, 24):
+    x.append(i)
+    y.append(function(a, b, i))
 plt.plot(x, y)
+plt.show()
