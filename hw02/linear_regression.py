@@ -1,3 +1,5 @@
+import matplotlib.pyplot as plt
+import numpy as np
 # 2 - 1
 f = open('linear_regression.txt', mode = 'r')
 arr = []
@@ -32,3 +34,6 @@ def function(a, b, x):
     return a * x + b
 time = 7.3
 print('학습 모델에 의해 예측한', time, '시간 작업하였을 때 완성된 인형은', function(a, b, time), '개입니다. ')
+x = np.arrange(0, b)
+y = x * a
+plt.plot(x, y)
