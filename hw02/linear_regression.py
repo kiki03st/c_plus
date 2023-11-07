@@ -20,6 +20,7 @@ def linear_regression(arr):
         _, worked_hours_raw, number_of_dolls_raw = i
         worked_hour = float(worked_hours_raw[:-6])
         number_of_dolls = float(number_of_dolls_raw[:-6])
+        plt.axis([worked_hour, number_of_dolls])
         e_x+=worked_hour
         e_x_2+=worked_hour ** 2 
         e_xy+=worked_hour * number_of_dolls
