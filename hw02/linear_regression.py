@@ -1,5 +1,7 @@
-#import matplotlib.pyplot as plt
-#import numpy as np
+import matplotlib
+from math import ceil
+matplotlib.use('QtAgg')  # 또는 'QtAgg'
+import matplotlib.pyplot as plt
 # 2 - 1
 f = open('linear_regression.txt', mode = 'r')
 arr = []
@@ -19,7 +21,7 @@ def linear_regression(arr):
         _, worked_hours_raw, number_of_dolls_raw = i
         worked_hour = float(worked_hours_raw[:-6])
         number_of_dolls = float(number_of_dolls_raw[:-6])
-        #plt.axis([worked_hour, number_of_dolls])
+		#plt.axis([worked_hour, number_of_dolls])
         e_x+=worked_hour
         e_x_2+=worked_hour ** 2 
         e_xy+=worked_hour * number_of_dolls
@@ -30,16 +32,22 @@ def linear_regression(arr):
     return a, b
 a, b = linear_regression(arr)
 print('y =', a, 'x +', b)
+# 2 - 3
 def function(a, b, x):
     return a * x + b
-time = 7.3
-print('학습 모델에 의해 예측한', time, '시간 작업하였을 때 완성된 인형은', function(a, b, time), '개입니다. ')
-'''
 x = []
 y = []
-for i in range(0, 24):
-    x.append(i)
-    y.append(function(a, b, i))
-plt.plot(x, y)
+max = 0
+for i in arr:
+    _, worked_hours_raw, number_of_dolls_raw = i
+    worked_hour = float(worked_hours_raw[:-6])
+    number_of_dolls = float(number_of_dolls_raw[:-6])
+    x.append(worked_hour)
+    y.append(number_of_dolls)
+    if worked_hour > max: max = worked_hour
+plt.scatter(x, y)
+plt.plot([function(a, b, i) for i in range(ceil(max) + 1)])
 plt.show()
-'''
+# 2 - 4
+time = 7.3
+print('학습 모델에 의해 예측한', time, '시간 작업하였을 때 완성된 인형은', function(a, b, time), '개입니다. ')
