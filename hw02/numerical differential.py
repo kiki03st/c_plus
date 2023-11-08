@@ -5,4 +5,4 @@ def numerical_diff(x):
     diff_result = (p2 - p1) / h # dy / dx = (f(x + h) - f(x)) / ((x + h) - x)
     return diff_result
 
-print("x ^ 2 + 2 x + 1 함수의 x=2지점에서의 미분값은", numerical_diff(2), "입니다.")
+print("x ^ 2 + 2 x + 1 함수의 x=2지점에서의 미분값은", round(numerical_diff(2), 7), "입니다.")
