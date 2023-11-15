@@ -1,0 +1,60 @@
+//doubly linked list solution
+#include <iostream>
+
+using namespace std;
+
+template <typename T>
+struct list{
+	T data;
+	list *next, *prev;
+};
+
+template <typename T>
+list<T>* append(T value){
+	list<T>* p = new(list<T>);
+	p -> data = value;
+	p -> next = NULL;
+	p -> prev = NULL;
+	return p;
+}
+
+template <typename T>
+list<T>* append(list<T>* target, T value){
+	list<T>* p = new(list<T>);
+	p -> data = value;
+	p -> prev = target;
+	p -> next = NULL;
+	target = target -> next = p;
+	return target;
+}
+
+template <typename T>
+void reverse(list<T>* head, list<T>* tail){
+	list<T>* loop = new(list<T>);
+	list<T>* backup = new(list<T>);
+	backup = head;
+	T tmp;
+	while(head -> prev != tail -> next or (head -> prev == NULL and tail -> next == NULL)){
+		tmp = head -> data;
+		head -> data = tail -> data;
+		tail -> data = tmp;
+		head = head -> next;
+		tail = tail -> prev;
+	}
+	//for(loop = backup; loop != NULL; loop = loop -> next) cout << loop -> data << endl;
+}
+
+int main(){
+	list<int>* head;
+	list<int>* tail;
+	list<int>* loop;
+	tail = head = append(10);
+	tail = append(tail, 20);
+	tail = append(tail, 30);
+	reverse(head, tail);
+	for(loop = head; loop != NULL; loop = loop -> next){
+		cout << loop -> data << endl;
+	}
+
+	return 0;
+}
