@@ -2,57 +2,43 @@
 
 using namespace std;
 
-typedef struct linked_list{
-	int data;
-	struct linked_list *prev, *next;
-}SLL;
+typedef struct list{
+	int value;
+	list *next;
+}list;
 
-void append(linked_list *p, int num){
-	for(p; p -> next != NULL; p = p -> next){}
-	p -> next = new SLL;
-	p -> next -> prev = p;
-	p -> next -> data = num;
-}
-
-void show(linked_list *p){
-	for(p; p != NULL; p = p -> next){
-		cout << p -> data << endl;
+void print(list *n){
+	while(n != NULL){
+		cout << n -> value << endl;
+		n = n -> next;
 	}
 }
 
-void reverse(linked_list *p){
-	int *backup;
-	int cnt = 0;
-	while(p != NULL){
-		cnt++;
-		backup = new int[cnt];
-		backup[cnt - 1] = p -> data;
-		if(p -> next == NULL) break;
-		p = p -> next;
-	}
-	for(int i = 0; i < cnt; i++){
-		p -> data = backup[i];
-		if(p -> prev == NULL) break;
-		p = p -> prev;
-	}
-//코드 결과, 40 0 0 0만 나옴 -> backup의 크기가 갱신될 때, 내부 내용물을 없애는 것으로 추정
+list* append(int value){
+	list *n = new(list);
+	n -> value = value;
+	n -> next = NULL;
+	return n;
 }
 
 int main(){
-	SLL *head = new SLL;
-	SLL *p = new SLL;
-	head -> data = 10;
-	p = head;
+	list *head = NULL;
+	list *loop = NULL;
+	head = append(10);
+	head -> next = append(20);
+	head -> next -> next = append(30);
+	print(head);
+	for(loop = head; loop != NULL; loop = loop -> next){
+		cout << loop -> value << endl;
+	}
+	/*
+	head -> value = 10;
+	head -> next = new(list);
 	
-	append(p, 20);
-	append(p, 30);
-	append(p, 40);
-	
-	show(head);
-	
-	reverse(head);
-
-	show(head);
-
+	head -> next -> value = 20;
+	head -> next -> next = new(list);
+	head -> next -> next -> value = 30;
+	head -> next -> next -> next = NULL;
+	*/
 	return 0;
 }
