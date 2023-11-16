@@ -2,28 +2,21 @@
 
 using namespace std;
 
-template <typename T>
 struct heap{
-	T value;
-	heap<T> *left, *right;
+	int value;
+	heap *left, *right;
 };
 
-
-template <typename T>
-heap<T>* append(heap<T>* node, T data){
-	heap<T>** arr;
-	int cnt = 0;
+heap* append(heap* node, int data){
+	heap* p = new(heap);
+	int size = 1;
+	heap** arr = new heap*[size];
+	arr[0] = node;
 	while(true){
-		if(node -> left == NULL){
-			node -> left = new(heap<T>);
-			node -> left -> value = data;
-			node -> left -> left = NULL;
-			node -> left -> right = NULL;
-			return 
-		else if(node -> right == NULL
+		for(
 
 int main(){
-	heap<int> *head;
-	
+	heap* head;
+	head -> value = 16;
 	return 0;
 }
