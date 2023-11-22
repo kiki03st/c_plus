@@ -1,0 +1,70 @@
+#include <iostream>
+
+using namespace std;
+
+struct queue{
+	int data;
+	queue *next;
+};
+
+class my_queue{
+	private:
+		queue *head, *tail;
+	public:
+		void Enqueue(int value){
+			if(head == NULL){
+				head = new(queue);
+				tail = head;
+				tail -> data = value;
+				tail -> next = NULL;
+			}
+			else{
+				queue *p = new(queue);
+				p -> data = value;
+				p -> next = NULL;
+				tail = tail -> next = p;
+			}
+		}
+		void Dequeue(){
+			queue *loop;
+			for(loop = head; loop -> next != tail; loop = loop -> next){
+				loop -> data = loop -> next -> data;
+			}
+			loop -> data = loop -> next -> data;
+			tail = loop;
+			tail -> next = NULL;
+		}
+		int Peek(){
+			if(head == NULL){
+				cout << "Queue is Empty." << endl;
+				return NULL;
+			}
+			return head -> data;
+		}
+		void print(){
+			queue *loop;
+			for(loop = head; loop != NULL; loop = loop -> next){
+				cout << "loop : " << loop -> data << endl;
+			}
+		}
+};
+
+int main(){
+	my_queue q;
+
+	q.Enqueue(10);
+	q.Enqueue(20);
+	q.Enqueue(30);
+	cout << q.Peek() << endl;
+	q.print();
+	q.Dequeue();
+	cout << q.Peek() << endl;
+	q.print();
+	q.Dequeue();
+	cout << q.Peek() << endl;
+	q.print();
+	q.Dequeue();
+	cout << q.Peek() << endl;
+	q.print();
+	return 0;
+}
