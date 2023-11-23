@@ -45,16 +45,15 @@ int main(){
 
 using namespace std;
 
-template <typename T>
 class my_queue{
 	private:
 		int size = 0;
-		T *arr;
+		int *arr;
 	public:
-		void Enqueue(T data){
-			T *backup = new T[size];
+		void Enqueue(int data){
+			int *backup = new int[size];
 			for(int i = 0; i < size; i++) backup[i] = arr[i];
-			arr = new T[++size];
+			arr = new int[++size];
 			for(int i = 0; i < size - 1; i++) arr[i] = backup[i];
 			arr[size - 1] = data;
 			delete[] backup;
@@ -64,13 +63,13 @@ class my_queue{
 				cout << "Queue size is Zero." << endl;
 				return;
 			}
-			T *backup = new T[size -1];
+			int *backup = new int[size -1];
 			for(int i = 0; i < size - 1; i++) backup[i] = arr[i + 1];
-			arr = new T[--size];
+			arr = new int[--size];
 			for(int i = 0; i < size; i++) arr[i] = backup[i];
 			delete[] backup;
 		}
-		T Peek(){
+		int Peek(){
 			if(size == 0){
 				cout << "Queue is NULL : ";
 				return NULL;
@@ -80,7 +79,7 @@ class my_queue{
 };
 
 int main(){
-	my_queue<int> q;
+	my_queue q;
 
 	q.Enqueue(10);
 	q.Enqueue(20);

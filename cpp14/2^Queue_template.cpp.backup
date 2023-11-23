@@ -2,15 +2,16 @@
 
 using namespace std;
 
+template <typename T>
 class my_queue{
 	private:
 		int size = 0;
-		int *arr;
+		T *arr;
 	public:
-		void Enqueue(int data){
-			int *backup = new int[size];
+		void Enqueue(T data){
+			T *backup = new T[size];
 			for(int i = 0; i < size; i++) backup[i] = arr[i];
-			arr = new int[++size];
+			arr = new T[++size];
 			for(int i = 0; i < size - 1; i++) arr[i] = backup[i];
 			arr[size - 1] = data;
 			delete[] backup;
@@ -20,13 +21,13 @@ class my_queue{
 				cout << "Queue size is Zero." << endl;
 				return;
 			}
-			int *backup = new int[size -1];
+			T *backup = new T[size -1];
 			for(int i = 0; i < size - 1; i++) backup[i] = arr[i + 1];
-			arr = new int[--size];
+			arr = new T[--size];
 			for(int i = 0; i < size; i++) arr[i] = backup[i];
 			delete[] backup;
 		}
-		int Peek(){
+		T Peek(){
 			if(size == 0){
 				cout << "Queue is NULL : ";
 				return NULL;
@@ -36,7 +37,7 @@ class my_queue{
 };
 
 int main(){
-	my_queue q;
+	my_queue<int> q;
 
 	q.Enqueue(10);
 	q.Enqueue(20);
