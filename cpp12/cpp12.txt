@@ -1,0 +1,150 @@
+//1. mystrcat
+#include <iostream>
+
+using namespace std;
+
+char* mystrcat(const char *str1, const char *str2){
+	int cnt = 0, len_1 = 0, len_2 = 0;
+	for(len_1; str1[len_1] != '\0'; len_1++){}
+	for(len_2; str2[len_2] != '\0'; len_2++){}
+	char* strsum = new char[len_1 + len_2 + 1];
+	for(cnt; cnt < len_1; cnt++) strsum[cnt] = str1[cnt];
+	for(cnt; cnt - len_1 < len_2; cnt++) strsum[cnt] = str2[cnt - len_1];
+	strsum[cnt] = '\0';
+	return strsum;
+}
+
+int main(){
+	char *str = mystrcat("Hello!", "World!");
+	cout << str << endl;
+}
+
+
+//2. Reverse linked list
+#include <iostream>
+
+using namespace std;
+
+template <typename T>
+struct list{
+	T value;
+	list<T>* next;
+};
+
+template <typename T>
+list<T>* append(T data){
+	list<T>* p = new(list<T>);
+	p -> value = data;
+	p -> next = NULL;
+	return p;
+}
+
+template <typename T>
+list<T>* append(list<T>* node, T data){
+	list<T>* p = new(list<T>);
+	p -> value = data;
+	p -> next = NULL;
+	node = node -> next = p;
+	return node;
+}
+
+template <typename T>
+list<T>* reverse(list<T>* head){
+	list<T>* loop = new(list<T>);
+	int cnt = 0, num = 0;
+	for(loop = head; loop != NULL; loop = loop -> next) cnt++;
+	int* arr = new int[cnt]();
+	for(loop = head; loop != NULL; loop = loop -> next) arr[num++] = loop -> value;
+	for(loop = head; loop != NULL; loop = loop -> next) loop -> value = arr[--cnt];
+	delete[] arr;
+	return head;
+}
+	
+
+int main(){
+	list<int> *head;
+	list<int> *loop;
+	list<int> *tail;
+
+	list<int>* r_head;
+
+	tail = head = append(10);
+	tail = append(tail, 20);
+	tail = append(tail, 30);
+	tail = append(tail, 40);
+	for(loop = head; loop != NULL; loop = loop -> next) cout << loop -> value << endl;
+
+	r_head = reverse(head);
+
+	cout << "Reversed " << endl;
+	for(loop = r_head; loop != NULL; loop = loop -> next) cout << loop -> value << endl;
+	return 0;
+}
+
+
+//3. Head (data structure)
+#include <iostream>
+
+using namespace std;
+
+int size = 0;
+int *heap;
+
+void sort(int index){
+	int i = index + 1;
+	int prev = i / 2;
+	int tmp;
+	if(i == 1) return;
+	else if(heap[i - 1] > heap[prev - 1]){
+		tmp = heap[i - 1];
+		heap[i - 1] = heap[prev - 1];
+		heap[prev - 1] = tmp;
+		sort(prev - 1);
+	}
+}
+
+void append(int data){
+	int* backup = new int[++size];
+	for(int i = 0; i < size - 1; i++) backup[i] = heap[i];
+	backup[size - 1] = data;
+	heap = backup;
+	delete[] backup;
+	sort(size - 1);
+}
+
+int pow(int num){
+	int sum = 1;
+	for(int i = 0; i < num; i++) sum *= 2;
+	return sum;
+}
+
+void print(){
+	int cnt = 0, num = 0;
+	for(int i = 0; i < size; i++){
+		cout << heap[i] << " ";
+		num++;
+		if(num == pow(cnt)){
+			cout << endl;
+			cnt++;
+			num = 0;
+		}
+	}
+}
+
+int main(){
+	append(16);
+	append(14);
+	append(10);
+	append(8);
+	append(7);
+	append(9);
+	append(3);
+	append(2);
+	append(4);
+	append(1);
+	append(15);
+	print();
+	return 0;
+}
+
+
