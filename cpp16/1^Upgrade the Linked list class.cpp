@@ -56,20 +56,20 @@ class my_list{
 			cout << "length of list : " << len << endl << "index : " << index << endl;
 		}
 
-		operator +(int n){
+		my_list operator +(int n){
 			return append(n);
 		}
-		operator +(my_list &ref){
+		my_list operator +(my_list &ref){
 			this -> tail -> next = ref -> head;
-			return this;
+			return &this;
 		}
-		operator -(int n){
+		my_list operator -(int n){
 			int i = 0;
 			node *loop = this -> head;
 			for(i; i < n; i++) loop = loop -> next;
 			while(loop -> next != NULL) loop -> data = loop -> next -> data;
 			loop = NULL;
-			return this;
+			return &this;
 		}
 		void printall(){
 			node *loop;
