@@ -7,7 +7,7 @@ struct node{
 	node *next;
 	int index;
 	
-	node(int d, int i): data(d), index(i) {}
+	node(int d, node *n, int i): data(d), next(n), index(i) {}
 };
 
 class my_list{
@@ -15,22 +15,20 @@ class my_list{
 		node *head, *current, *start;
 		int index;
 	public:
-		my_list(): head(0), start(0), current(0), index(0) {}
+		my_list(): head(0), current(0), index(0) {}
 		my_list& append(const int d){
-			if(!start){
-				head = new node(d, index++);
-				head -> next = NULL;
+			head = new node(d, head, index++);
+			if(!current){
 				start = head;
-			}
-			else{
-				node *p = new node(d, index++);
-				head = head -> next = p;
+				current = head;
 			}
 			return *this;
 		}
 		my_list& next(){
 			if(index){
-				if(!current) current = start;
+				if(!current){
+					current = start;
+				}
 				current = current -> next;
 			}
 			else cout << "list out of range" << endl;
@@ -40,25 +38,29 @@ class my_list{
 			current = start;
 		}
 		int get(){
-			if(!current){
-				if(start){
-					current = start;
-					return current -> data;
-				}
+			if(!head){
 				cout << "EMPTY : ";
 				return 0;
 			}
-			else return current -> data;
+			else if(!current) current = head;
+			return current -> data;
 		}
 		void info(){
 			cout << "length: " << index << ", current: " << current -> index << endl;
 		}
+/*
+		int operator[](int i){
+			node* s;
+			for(s = head; s -> index != i; s = s -> next);
+			return s -> data;
+		}
+*/
 };
 
 int main(){
 	my_list l;
 	l.append(10).append(20).append(30).append(40);
-	
+
 	l.next().next();
 	cout << l.get() << endl;
 
