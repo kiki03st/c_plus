@@ -8,7 +8,7 @@ struct node{
 	node *next;
 	int index;
 	
-	node(int d, node *n, int i): data(d), next(n), index(i) {}
+	node(int d, int i): data(d), index(i) {}
 };
 
 class my_list{
@@ -16,59 +16,71 @@ class my_list{
 		node *head, *current, *start;
 		int index;
 	public:
-		my_list(): head(0), current(0), index(0) {}
+		my_list(): head(0), start(0), current(0), index(0) {}
 		my_list& append(const int d){
-			head = new node(d, head, index++);
-			if(!current){
+			if(!start){
+				head = new node(d, index++);
+				head -> next = NULL;
 				start = head;
-				current = head;
+			}
+			else{
+				node *p = new node(d, index++);
+				head = head -> next = p;
 			}
 			return *this;
 		}
 		my_list& next(){
 			if(index){
-				if(!current){
-					current = start;
+				if(!current) current = start;
+				else if(index - 1 == current -> index){
+					cout << "list out of range" << endl;
+					return *this;
 				}
 				current = current -> next;
 			}
-			else cout << "list out of range" << endl;
+			else cout << "EMPTY" << endl;
 			return *this;
 		}
 		void rewind(){
 			current = start;
 		}
 		int get(){
-			if(!head){
+			if(!current){
+				if(start){
+					current = start;
+					return current -> data;
+				}
 				cout << "EMPTY : ";
-				return NULL;
+				return 0;
 			}
-			else if(!current) current = head;
-			return current -> data;
+			else return current -> data;
 		}
 		void info(){
 			cout << "length: " << index << ", current: " << current -> index << endl;
 		}
-/*
-		int operator[](int i){
-			node* s;
-			for(s = head; s -> index != i; s = s -> next);
-			return s -> data;
-		}
-*/
 };
 
 int main(){
+
 	my_list l;
+
 	l.append(10).append(20).append(30).append(40);
 
-	l.next().next().next();
+
+	l.next().next();
+
 	cout << l.get() << endl;
 
+
+
 	l.info();
+
 	l.rewind();
+
 	cout << l.get() << endl;
+
 	return 0;
+
 }
 
 

@@ -31,9 +31,13 @@ class my_list{
 		my_list& next(){
 			if(index){
 				if(!current) current = start;
+				else if(index - 1 == current -> index){
+					cout << "list out of range" << endl;
+					return *this;
+				}
 				current = current -> next;
 			}
-			else cout << "list out of range" << endl;
+			else cout << "EMPTY" << endl;
 			return *this;
 		}
 		void rewind(){
@@ -56,14 +60,24 @@ class my_list{
 };
 
 int main(){
+
 	my_list l;
+
 	l.append(10).append(20).append(30).append(40);
-	
+
+
 	l.next().next();
+
 	cout << l.get() << endl;
 
+
+
 	l.info();
+
 	l.rewind();
+
 	cout << l.get() << endl;
+
 	return 0;
+
 }
