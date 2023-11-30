@@ -55,47 +55,15 @@ class my_list{
 			}
 			cout << "length of list : " << len << endl << "index : " << index << endl;
 		}
-
-		my_list& operator +(int n){
-			return append(n);
-		}
-		my_list& operator +(my_list &ref){
-			this -> tail -> next = ref.head;
-			this -> tail = ref.tail;
-			return *this;
-		}
-		my_list& operator -(int n){
-			int i = 0;
-			node *loop = this -> head;
-			for(i; i < n; i++) loop = loop -> next;
-			while(loop -> next != NULL){
-				loop -> data = loop -> next -> data;
-				if(loop -> next -> next == NULL) tail = loop;
-			}
-			loop = NULL;
-			return *this;
-		}
-		void printall(){
-			node *loop;
-			for(loop = this -> head; loop != NULL; loop = loop -> next) cout << loop -> data << " ";
-			cout << endl;
-		}
 };
 
 int main(){
 	my_list l;
-	my_list ll;
 	l.append(10).append(20).append(30).append(40);
 	l.next().next();
+	cout << l.get() << endl; // print out 30
+	l.info(); // print out 'length: 4, current: 2 (or 3 depending on your start index)'
+	l.rewind();
 	cout << l.get() << endl;
-	ll = ll + 100 + 200 + 300;
-	ll.next();
-	cout << ll.get() << endl;
-	ll = ll + l;
-	ll.printall();
-	ll = ll - 5;
-	ll.next();
-	cout << ll.get() << endl;
-	ll.printall();
 	return 0;
 }
