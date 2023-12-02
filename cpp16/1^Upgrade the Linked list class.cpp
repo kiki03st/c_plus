@@ -55,28 +55,28 @@ class my_list{
 			return s -> data;
 		}
 */
-		my_list operator +(int n){
-			this.append(n);
-			return &this;
+		my_list* operator +(int n){
+			this -> append(n);
+			return this;
 		}
-		my_list operator +(my_list* p){
+		my_list* operator +(my_list* p){
 			node *loop;
 			for(loop = p -> start; loop != NULL; loop = loop -> next){
 				head = new node(loop -> data, head, loop -> index + this -> index++);
 			}
-			return &this;
+			return this;
 		}
-		my_list operator -(int n){
+		my_list* operator -(int n){
 			node* loop;
 			for(loop = start; loop != NULL; loop = loop -> next){
 				if(loop -> next -> index == n){
 					delete loop -> next;
 					loop -> next = loop -> next -> next;
-					return &this;
+					return this;
 				}
 			}
 			cout << "not found" << endl;
-			return NULL;
+			return new my_list();
 		}
 		void printall(){
 			cout << "List : " << endl;
