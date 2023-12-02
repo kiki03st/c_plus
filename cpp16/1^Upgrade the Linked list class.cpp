@@ -53,7 +53,14 @@ class my_list{
 				cout << "EMPTY : ";
 				return 0;
 			}
-			else return current -> data;
+			else{
+				if(current -> index >= this -> index){
+					cout << "current is placed in " << current -> index << ". but my_list's last index is " << this -> index - 1 << ". " << endl;
+					cout << "change current's index to " << this -> index - 1 << endl;
+					current = head;
+				}
+				return current -> data;
+			}
 		}
 		void info(){
 			cout << "length: " << index << ", current: " << current -> index << endl;
@@ -70,15 +77,16 @@ class my_list{
 		}
 		my_list& operator -(int n){
 			if(n >= index) cout << "list out of range" << endl;
+			else if(n == 0) head = start = start -> next;
 			else{
 				node *loop;
 				for(loop = start; loop -> next -> index != n; loop = loop -> next){}
-				if(loop -> next == current) current = loop -> next -> next;
+				if(current -> index >= n) current = current ->  next;
 				loop -> next = loop -> next -> next;
-				index--;
 				if(loop != NULL){
 					for(loop = loop -> next; loop != NULL; loop = loop -> next) loop -> index--;
 				}
+				this -> index--;
 			}
 			return *this;
 		}
@@ -115,5 +123,6 @@ int main(){
 	ll.next();
 	cout << ll.get() << endl;
 	ll.printall();
+	
 	return 0;
 }
