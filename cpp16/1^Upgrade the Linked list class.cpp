@@ -1,101 +1,108 @@
 #include <iostream>
 
 using namespace std;
-class node{
-	public:
-		int data;
-		node *next;
-};
+
+struct node{
+	int data;
+	node *next;
+	int index;
 	
+	node(int d, node *n, int i): data(d), next(n), index(i) {}
+};
+
 class my_list{
 	private:
-		node *stat, *head, *tail;
+		node *head, *current, *start;
+		int index;
 	public:
-		my_list(){
-			head = NULL;
-			stat = tail = head;
-		}
-		my_list& append(int value){
-			if(head == NULL){
-				head = new node;
-				stat = tail = head;
-				tail -> data = value;
-				tail -> next = NULL;
-			}
-			else{
-				node *p = new node;
-				p -> data = value;
-				p -> next = NULL;
-				tail = tail -> next = p;
+		my_list(): head(0), current(0), index(0) {}
+		my_list& append(const int d){
+			head = new node(d, head, index++);
+			if(!current){
+				start = head;
+				current = head;
 			}
 			return *this;
 		}
 		my_list& next(){
-			if(stat -> next == NULL){
-				cout << "더이상 이동할 수 없습니다." << endl;
+			if(index){
+				if(!current){
+					current = start;
+				}
+				current = current -> next;
 			}
-			else{
-				stat = stat -> next;
-			}
+			else cout << "list out of range" << endl;
 			return *this;
-		}
-		int get(){
-			return stat -> data;
 		}
 		void rewind(){
-			stat = head;
+			current = start;
+		}
+		int get(){
+			if(!head){
+				cout << "EMPTY : ";
+				return NULL;
 			}
+			else if(!current) current = head;
+			return current -> data;
+		}
 		void info(){
-			node* loop = new node;
-			int len = 0;
-			int index = 0;
-			for(loop = head; loop != NULL; loop = loop -> next){
-				if(loop == stat) index = len;
-				len++;
+			cout << "length: " << index << ", current: " << current -> index << endl;
+		}
+/*
+		int operator[](int i){
+			node* s;
+			for(s = head; s -> index != i; s = s -> next);
+			return s -> data;
+		}
+*/
+		my_list operator +(int n){
+			this.append(n);
+			return &this;
+		}
+		my_list operator +(my_list* p){
+			node *loop;
+			for(loop = p -> start; loop != NULL; loop = loop -> next){
+				head = new node(loop -> data, head, loop -> index + this -> index++);
 			}
-			cout << "length of list : " << len << endl << "index : " << index << endl;
+			return &this;
 		}
-
-		my_list& operator +(int n){
-			return append(n);
-		}
-		my_list& operator +(my_list &ref){
-			this -> tail -> next = ref.head;
-			this -> tail = ref.tail;
-			return *this;
-		}
-		my_list& operator -(int n){
-			int i = 0;
-			node *loop = this -> head;
-			for(i; i < n; i++) loop = loop -> next;
-			while(loop -> next != NULL){
-				loop -> data = loop -> next -> data;
-				if(loop -> next -> next == NULL) tail = loop;
+		my_list operator -(int n){
+			node* loop;
+			for(loop = start; loop != NULL; loop = loop -> next){
+				if(loop -> next -> index == n){
+					delete loop -> next;
+					loop -> next = loop -> next -> next;
+					return &this;
+				}
 			}
-			loop = NULL;
-			return *this;
+			cout << "not found" << endl;
+			return NULL;
 		}
 		void printall(){
+			cout << "List : " << endl;
 			node *loop;
-			for(loop = this -> head; loop != NULL; loop = loop -> next) cout << loop -> data << " ";
-			cout << endl;
+			for(loop = start; loop != NULL; loop = loop -> next){
+				cout << loop -> index << " : " << loop -> data << endl;
+			}
 		}
+
 };
 
 int main(){
 	my_list l;
-	my_list ll;
+	my_list s;
 	l.append(10).append(20).append(30).append(40);
-	l.next().next();
+	s.append(20).append(30).append(40).append(100);
+	l = l + 50;
+	l = l + s;
+	l.printall();
+	l = l - 5;
+	l.printall();
+	l.next().next().next();
 	cout << l.get() << endl;
-	ll = ll + 100 + 200 + 300;
-	ll.next();
-	cout << ll.get() << endl;
-	ll = ll + l;
-	ll.printall();
-	ll = ll - 5;
-	ll.next();
-	cout << ll.get() << endl;
-	ll.printall();
+
+	l.info();
+	l.rewind();
+	cout << l.get() << endl;
 	return 0;
 }
