@@ -6,78 +6,71 @@ struct node{
 	int data;
 	node *next;
 	int index;
-	
-	node(int d, int i): data(d), index(i) {}
+
+	node(int d, node *n, int i): data(d), next(n), index(i) {}
 };
 
-class my_list{
+class slist{
 	private:
-		node *head, *current, *start;
+		node *head;
+		node *current;
 		int index;
 	public:
-		my_list(): head(0), start(0), current(0), index(0) {}
-		my_list& push_back(const int d){
-			if(!start){
-				head = new node(d, index++);
-				head -> next = NULL;
-				start = head;
+		slist(): head(0), current(0), index(0) {}
+		void push_front(const int &d){ head = new node(d, head, index++); }
+		void push_back(const int &d){
+			node *loop, *tmp;
+			for(loop = head; loop != NULL; loop = loop -> next){
+				loop -> index++;
+				if(loop -> next == NULL) tmp = loop;
 			}
-			else{
-				node *p = new node(d, index++);
-				head = head -> next = p;
-			}
-			return *this;
+			node *p = new node(d, NULL, 0);
+			tmp -> next = p;
+			this -> index++;
 		}
-		my_list& next(){
-			if(index){
-				if(!current) current = start;
-				else if(index - 1 == current -> index){
-					cout << "list out of range" << endl;
-					return *this;
-				}
-				current = current -> next;
-			}
-			else cout << "EMPTY" << endl;
+		slist& next(){
+			if(!current) current = head;
+			else current = current -> next;
+			
 			return *this;
-		}
-		void rewind(){
-			current = start;
 		}
 		int get(){
-			if(!current){
-				if(start){
-					current = start;
-					return current -> data;
-				}
-				cout << "EMPTY : ";
-				return 0;
-			}
-			else return current -> data;
+			return current -> data;
 		}
-		void info(){
-			cout << "length: " << index << ", current: " << current -> index << endl;
+
+		int operator[](int i){
+			node *s;
+			for(s = head; s -> index != i; s = s -> next);
+			return s -> data;
 		}
 };
 
 int main(){
-	// 저번 클래스 2 과제에서 이미 구현했어서 append 함수 이름을 push_back으로 바꿔서 제출합니다...
-	my_list l;
+	slist s;
 
-	l.push_back(10).push_back(20).push_back(30).push_back(40);
+	s.push_front(10);
+	s.push_front(20);
+	s.push_front(30);
+	s.push_front(40);
+	s.push_front(50);
+	s.push_back(100);
+	s.push_back(200);
+	s.push_back(300);
+	s.push_back(400);
+	s.push_back(500);
 
-
-	l.next().next();
-
-	cout << l.get() << endl;
-
-
-
-	l.info();
-
-	l.rewind();
-
-	cout << l.get() << endl;
+	
+	int i = 0;
+	cout << s[i++] << endl;
+	cout << s[i++] << endl;
+	cout << s[i++] << endl;
+	cout << s[i++] << endl;
+	cout << s[i++] << endl;
+	cout << s[i++] << endl;
+	cout << s[i++] << endl;
+	cout << s[i++] << endl;
+	cout << s[i++] << endl;
+	cout << s[i++] << endl;
 
 	return 0;
-
 }

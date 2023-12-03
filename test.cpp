@@ -1,55 +1,21 @@
 #include <iostream>
+#include <ctime>
 
 using namespace std;
 
-struct in{
-	short a;
-	int b;
-};
-// in : 8 byte
-struct out{
-	short n;
-	struct in m;
-	int k;
-};
-// out : in(struct) = 8 -> 8 * 3 = 24
-
-struct case_in{
-	double a;
-	int b;
-};
-
-struct case_out{
-	float a;
-	struct case_in b;
-	double c;
-};
-
-struct two_short{
-	short a;
-	short b;
-};
-
-struct short_int{
-	short a;
-	int b;
-};
-
-struct two_int{
-	int a;
-	int b;
-};
-
 int main(){
-	cout << sizeof(char) << endl;
-	// cout << sizeof(two_short) << endl;
-	// cout << sizeof(short_int) << endl;
-	// cout << sizeof(two_int) << endl;
-	// cout << "float : " << sizeof(float) << endl;
-	// cout << "double : " << sizeof(double) << endl;
-	// cout << "case_in : " << sizeof(case_in) << endl;
-	// cout << "case_out : " << sizeof(case_out) << endl;
-	// cout << sizeof(in) << endl;
-	// cout << sizeof(out) << endl;
+	char a[16] = {0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88, 0x99, 0xAA, 0xBB, 0xCC, 0xDD, 0xEE, 0xFF, 0x00};
+	char *c = (char *)a;
+	int *i = (int *)a;
+	long *l = (long *)a;
+
+	cout << hex;
+	cout << c << endl;
+	cout << *c << endl;
+	cout << (int)*c << endl;
+	cout << i << endl;
+	cout << *i << endl;
+	cout << l << endl;
+	cout << *l << endl;
 	return 0;
 }
