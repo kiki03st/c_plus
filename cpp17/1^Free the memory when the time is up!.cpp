@@ -13,7 +13,7 @@ class timer_smartptr{
 		void timer(int time){
 			clock_t start = clock();
 			while(((double)clock() - start) / CLOCKS_PER_SEC < time);
-			delete this;
+			delete ptr;
 		}
 		
 		timer_smartptr(T *p = 0, int time = 10): ptr(p){
@@ -30,7 +30,7 @@ class timer_smartptr{
 };
 
 int main(){
-	timer_smartptr<int> p1(new int, 3);
+	timer_smartptr<int> p1(new int, 10);
 
 	p1.join();
 
