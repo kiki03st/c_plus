@@ -1,3 +1,4 @@
+//1. Remove duplicate elements in the vector
 #include <iostream>
 #include <vector>
 #include <algorithm>
@@ -15,3 +16,5 @@ int main(){
 	cout << endl;
 	return 0;
 }
+
+
