@@ -1,9 +1,8 @@
-import numpy as np
+import math
 
-np_ones = np.ones((2, 2))
-np_zeros = np.zeros((2, 2))
+def sigmoid(x):
+    y = 1 / (1 + math.exp(-x))
+    return y
 
-np_ones_vec = np.ones((2, 1))
-np_zeros_vec = np.zeros((2, 1))
-
-print(np_ones_vec)
+n = float(input())
+print(sigmoid(n))
