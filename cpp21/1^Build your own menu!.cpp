@@ -1,12 +1,14 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include <conio.h>
+//#include <conio.h>
 
 using namespace std;
 
-#define clrscr() system("cls")
-#define getkey() getch()
+//#define clrscr() system("cls")
+#define clrscr() system("clear")
+//#define getkey() getch()
+#define getkey() getchar()
 
 class AbstractMenu{
 	string title;
