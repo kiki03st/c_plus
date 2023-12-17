@@ -1,14 +1,12 @@
 #include <iostream>
 #include <string>
 #include <vector>
-//#include <conio.h>
+#include <conio.h>
 
 using namespace std;
 
 //#define clrscr() system("cls")
-#define clrscr() system("clear")
 //#define getkey() getch()
-#define getkey() getchar()
 
 class AbstractMenu{
 	string title;
@@ -54,26 +52,28 @@ class PopupMenu : public AbstractMenu{
 };
 
 int main(){
-	PopupMenu* menubar = new PopupMenu("MENUBAR");
+	PopupMenu* menubar = new PopupMenu("The Venti");
 
-	PopupMenu* p1 = new PopupMenu("File");
-	PopupMenu* p2 = new PopupMenu("Edit");
+	PopupMenu* p1 = new PopupMenu("매장");
+	PopupMenu* p2 = new PopupMenu("포장");
 
 	menubar -> addMenu(p1);
 	menubar -> addMenu(p2);
 
-	p1 -> addMenu( new MenuItem("New file", 11) );
-	p1 -> addMenu( new MenuItem("Open", 12) );
-	p1 -> addMenu( new MenuItem("Save", 13) );
+	p1 -> addMenu( new MenuItem("아이스티", 11) );
+	p1 -> addMenu( new MenuItem("아이스 아메리카노", 12) );
+	p1 -> addMenu( new MenuItem("딸기라떼", 13) );
 
-	p2 -> addMenu( new MenuItem("Copy", 21) );
-	p2 -> addMenu( new MenuItem("Paste", 22) );
+	p2 -> addMenu( new MenuItem("아이스티", 21) );
+	p2 -> addMenu( new MenuItem("아이스 아메리카노", 22) );
+	p2 -> addMenu( new MenuItem("딸기라떼", 23) );
 
-	PopupMenu* p3 = new PopupMenu("Find");
+	PopupMenu* p3 = new PopupMenu("결제");
 	p2 -> addMenu(p3);
 
-	p3 -> addMenu( new MenuItem("Find", 31) );
-	p3 -> addMenu( new MenuItem("Find and Replace", 32) );
+	p3 -> addMenu( new MenuItem("카드", 31) );
+	p3 -> addMenu( new MenuItem("카카오페이", 32) );
+	p3 -> addMenu( new MenuItem("삼성페이", 33) );
 
 	menubar -> command();
 	
