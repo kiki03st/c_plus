@@ -9,8 +9,7 @@ private:
   bool transited; // for syncronization
   bool state; // 0: deactivated, 1: activated
   bool isTerminal; // 0: terminal, 1: non-terminal
-  int cnt;
-
+  
   char match; // target character for matching
 
   vector<node*> next; // next link 
@@ -21,12 +20,8 @@ public:
 
     isTerminal = _isTerminal;
     match = _match;
-    cnt = -1;
+
     state = transited = 0;
-  }
-  
-  void setcnt(int n){
-    cnt = n;
   }
 
   void addNode(node *_next){
@@ -77,29 +72,9 @@ void test(vector<node> &s, const string &str){
   cout << endl;
 }
 
-int check(char alpha){
-  if(alpha >= 'a' && alpha <= 'z' || alpha >= 'A' && alpha <= 'Z') return 0;
-  else if(alpha == '.' || alpha == '*' || alpha == '{' || alpha == ',' || alpha == '}' || alpha == '|' || alpha == '+') return 1;
-  return -1;
-}
-
 int main(){
-  cout << "regex:";
-  string regex;
-  cin >> regex;
-  char alpha;
-  for(int i = 0; i < regex.length()){
-    alpha = regex[i];
-    if(check(alpha) == -1){
-      cout << "invalid_syntax" << endl;
-      return 0;
-    }
-  }
-  vector<node> s(regex.length());
-  for(int i = 0; i < regex.length()){
-    if(regex[i] == '*'){
-      if(i > 0){
-        
+  vector<node> s(5);
+  
   // set nodes (name, terminal, match)
   s[0].init("s0", 0, 'a'); 
   s[1].init("s1", 0, 'b');
